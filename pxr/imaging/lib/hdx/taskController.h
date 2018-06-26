@@ -35,6 +35,8 @@
 #include "pxr/imaging/hd/sceneDelegate.h"
 #include "pxr/imaging/hd/task.h"
 
+#include "pxr/imaging/cameraUtil/conformWindow.h"
+
 #include "pxr/imaging/glf/simpleLightingContext.h"
 #include "pxr/usd/sdf/path.h"
 #include "pxr/base/tf/staticTokens.h"
@@ -137,6 +139,10 @@ public:
     HDX_API
     void SetCameraClipPlanes(std::vector<GfVec4d> const& clipPlanes);
 
+    /// Set the camera window policy.
+    HDX_API
+    void SetCameraWindowPolicy(CameraUtilConformWindowPolicy windowPolicy);
+
     /// -------------------------------------------------------
     /// Picking API
 
@@ -167,6 +173,13 @@ public:
     void SetSelectionColor(GfVec4f const& color);
 
     /// -------------------------------------------------------
+    /// Shadow API
+
+    /// Turns the shadow task on or off.
+    HDX_API
+    void SetEnableShadows(bool enable);
+
+    /// -------------------------------------------------------
     /// Progressive Image Generation
     
     /// Return whether the image has converged.
@@ -192,6 +205,7 @@ private:
     void _CreateRenderTasks();
     void _CreateSelectionTask();
     void _CreateLightingTask();
+    void _CreateShadowTask();
 
     // A private scene delegate member variable backs the tasks this
     // controller generates. To keep _Delegate simple, the containing class
@@ -240,6 +254,7 @@ private:
     SdfPath _idRenderTaskId;
     SdfPath _selectionTaskId;
     SdfPath _simpleLightTaskId;
+    SdfPath _shadowTaskId;
 
     // Generated cameras
     SdfPath _cameraId;
